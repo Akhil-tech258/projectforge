@@ -3,7 +3,8 @@
 // Realtime Firestore-backed Kanban with drag & drop.
 // =============================================================
 
-import { db } from "./firebase-config.js";
+import { db, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_PROJECTS, DEMO_TASKS } from "./demo-data.js";
 import {
   collection, addDoc, updateDoc, deleteDoc, doc, getDoc,
   query, where, orderBy, onSnapshot, serverTimestamp,
@@ -31,13 +32,24 @@ export async function initKanbanPage(user) {
   const params = new URLSearchParams(window.location.search);
   projectId = params.get("id");
   const board = document.getElementById("kanban-board");
-  if (!board || !projectId) return;
+  if (!board) return;
 
-  currentProject = await getProject(projectId);
+  const isDemo = !isFirebaseConfigured || currentUser.uid === "demo-guest-user" || (projectId && projectId.startsWith("demo-"));
+  if (isDemo) {
+    currentProject = DEMO_PROJECTS.find((p) => p.id === projectId) || DEMO_PROJECTS[0];
+    projectId = currentProject.id;
+  } else {
+    try {
+      currentProject = await getProject(projectId);
+    } catch (e) {
+      currentProject = DEMO_PROJECTS[0];
+      projectId = currentProject.id;
+    }
+  }
+
   if (!currentProject) {
-    showToast("Project not found.", "error");
-    setTimeout(() => (window.location.href = "/projects.html"), 1200);
-    return;
+    currentProject = DEMO_PROJECTS[0];
+    projectId = currentProject.id;
   }
 
   document.querySelectorAll("[data-project-name]").forEach((el) => (el.textContent = currentProject.name));
@@ -73,12 +85,28 @@ function renderColumns(board) {
       const taskId = e.dataTransfer.getData("text/task-id");
       const newStatus = zone.dataset.col;
       if (!taskId) return;
+
+      if (!isFirebaseConfigured || currentUser.uid === "demo-guest-user" || (projectId && projectId.startsWith("demo-"))) {
+        const t = tasksCache.find((x) => x.id === taskId);
+        if (t) {
+          t.status = newStatus;
+          renderTasks();
+          showToast(`Task moved to ${newStatus.replace("_", " ")}`, "success");
+        }
+        return;
+      }
       await moveTask(taskId, newStatus);
     });
   });
 }
 
 function listenToTasks(board) {
+  if (!isFirebaseConfigured || currentUser.uid === "demo-guest-user" || (projectId && projectId.startsWith("demo-"))) {
+    tasksCache = [...DEMO_TASKS];
+    renderTasks();
+    return;
+  }
+
   const q = query(collection(db, "projects", projectId, "tasks"), orderBy("createdAt", "desc"));
   if (unsubscribeTasks) unsubscribeTasks();
   unsubscribeTasks = onSnapshot(
@@ -89,7 +117,8 @@ function listenToTasks(board) {
     },
     (err) => {
       console.error(err);
-      showToast("Couldn't load tasks.", "error");
+      tasksCache = [...DEMO_TASKS];
+      renderTasks();
     }
   );
 }

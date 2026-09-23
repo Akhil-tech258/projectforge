@@ -57,6 +57,17 @@
         </button>
       </form>
 
+      <div style="display:flex;align-items:center;gap:.75rem;margin:1.25rem 0;color:var(--text-tertiary);font-size:.75rem;text-transform:uppercase;letter-spacing:1px;">
+        <span style="flex:1;height:1px;background:var(--border);"></span>
+        <span>Portfolio Preview</span>
+        <span style="flex:1;height:1px;background:var(--border);"></span>
+      </div>
+
+      <button type="button" id="guest-demo-btn" class="btn btn-ghost btn-block" style="border:1px dashed var(--violet);color:var(--text-primary);display:flex;align-items:center;justify-content:center;gap:.5rem;font-weight:500;">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--violet);"></i>
+        <span>Try Live Interactive Demo</span>
+      </button>
+
       <p class="auth-foot">Already have an account? <a href="login.html">Log in</a></p>
     </div>
   </div>
@@ -67,6 +78,10 @@
   import { initRegisterForm, redirectIfAuthed } from "./js/auth.js";
   redirectIfAuthed();
   initRegisterForm();
+  document.getElementById("guest-demo-btn")?.addEventListener("click", () => {
+    sessionStorage.setItem("projectforge_guest_demo", "true");
+    window.location.href = "dashboard.html";
+  });
 </script>
 </body>
 </html>

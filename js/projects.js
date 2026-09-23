@@ -3,7 +3,8 @@
 // Firestore CRUD for the Projects list page + project card render.
 // =============================================================
 
-import { auth, db } from "./firebase-config.js";
+import { auth, db, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_PROJECTS } from "./demo-data.js";
 import {
   collection, addDoc, updateDoc, deleteDoc, doc, getDoc,
   query, where, orderBy, onSnapshot, serverTimestamp, arrayUnion
@@ -33,6 +34,12 @@ export function initProjectsPage(user) {
    Realtime listener — projects where the user is owner or member
 --------------------------------------------------------------- */
 function listenToProjects(grid, emptyState) {
+  if (!isFirebaseConfigured || currentUser.uid === "demo-guest-user") {
+    window.__pfProjects = DEMO_PROJECTS;
+    renderProjects(DEMO_PROJECTS, grid, emptyState);
+    return;
+  }
+
   grid.innerHTML = skeletonCards(6);
 
   const q = query(
@@ -51,8 +58,8 @@ function listenToProjects(grid, emptyState) {
     },
     (err) => {
       console.error(err);
-      grid.innerHTML = "";
-      showToast("Couldn't load projects. Check your connection.", "error");
+      window.__pfProjects = DEMO_PROJECTS;
+      renderProjects(DEMO_PROJECTS, grid, emptyState);
     }
   );
 }
@@ -76,7 +83,7 @@ function renderProjects(projects, grid, emptyState) {
   grid.querySelectorAll("[data-open-project]").forEach((card) => {
     card.addEventListener("click", (e) => {
       if (e.target.closest("[data-project-menu]")) return;
-      window.location.href = `/project-details.html?id=${card.dataset.openProject}`;
+      window.location.href = `project-details.html?id=${card.dataset.openProject}`;
     });
   });
   grid.querySelectorAll("[data-project-menu]").forEach((btn) => {

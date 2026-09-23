@@ -4,7 +4,8 @@
 // messages sync in real time via Firestore.
 // =============================================================
 
-import { db } from "./firebase-config.js";
+import { db, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_PROJECTS } from "./demo-data.js";
 import {
   collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp, limit
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -19,26 +20,39 @@ export function initTeamChatPage(user) {
   if (!list) return;
   currentUser = user;
 
+  if (!isFirebaseConfigured || user.uid === "demo-guest-user") {
+    renderProjectList(DEMO_PROJECTS, list);
+    wireComposer();
+    return;
+  }
+
   const q = query(collection(db, "projects"), where("memberIds", "array-contains", user.uid));
   onSnapshot(q, (snap) => {
     const projects = snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter((p) => !p.archived);
     if (!projects.length) {
-      list.innerHTML = `<p class="text-secondary" style="font-size:.8rem;padding:var(--space-4);">Create a project to start chatting with your team.</p>`;
+      renderProjectList(DEMO_PROJECTS, list);
       return;
     }
-    list.innerHTML = projects.map((p) => `
-      <button class="side-link chat-project-item" data-project-id="${p.id}" style="width:100%;">
-        <span class="project-tag-dot" style="background:${p.color || "#7C5CFF"}"></span> ${escapeHTML(p.name)}
-      </button>`).join("");
-
-    list.querySelectorAll(".chat-project-item").forEach((btn) => {
-      btn.addEventListener("click", () => selectProject(btn.dataset.projectId, btn.textContent.trim()));
-    });
-
-    if (!activeProjectId && projects[0]) selectProject(projects[0].id, projects[0].name);
+    renderProjectList(projects, list);
+  }, (err) => {
+    console.error(err);
+    renderProjectList(DEMO_PROJECTS, list);
   });
 
   wireComposer();
+}
+
+function renderProjectList(projects, list) {
+  list.innerHTML = projects.map((p) => `
+    <button class="side-link chat-project-item" data-project-id="${p.id}" style="width:100%;">
+      <span class="project-tag-dot" style="background:${p.color || "#7C5CFF"}"></span> ${escapeHTML(p.name)}
+    </button>`).join("");
+
+  list.querySelectorAll(".chat-project-item").forEach((btn) => {
+    btn.addEventListener("click", () => selectProject(btn.dataset.projectId, btn.textContent.trim()));
+  });
+
+  if (!activeProjectId && projects[0]) selectProject(projects[0].id, projects[0].name);
 }
 
 function selectProject(projectId, name) {
@@ -49,6 +63,12 @@ function selectProject(projectId, name) {
 
   if (unsubscribeMessages) unsubscribeMessages();
   const messagesEl = document.getElementById("chat-messages");
+
+  if (!isFirebaseConfigured || currentUser?.uid === "demo-guest-user") {
+    renderDemoMessages(messagesEl);
+    return;
+  }
+
   messagesEl.innerHTML = `<div class="skeleton skeleton-line" style="width:60%"></div>`;
 
   const q = query(
@@ -77,7 +97,30 @@ function selectProject(projectId, name) {
       </div>`;
     }).join("");
     messagesEl.scrollTop = messagesEl.scrollHeight;
+  }, (err) => {
+    console.error(err);
+    renderDemoMessages(messagesEl);
   });
+}
+
+function renderDemoMessages(messagesEl) {
+  const demoMsgs = [
+    { authorName: "Sara Chen", text: "Hey team! The initial API benchmarks look great.", isMine: false, time: "1h ago" },
+    { authorName: "Marcus Vance", text: "Nice! I pushed the unit tests for the token bucket rate limiter.", isMine: false, time: "45m ago" },
+    { authorName: "Alex Rivera", text: "Awesome work everyone. Let's aim to freeze features by Friday.", isMine: true, time: "20m ago" }
+  ];
+  messagesEl.innerHTML = demoMsgs.map((m) => `
+    <div style="display:flex;gap:.6rem;margin-bottom:var(--space-4);${m.isMine ? "flex-direction:row-reverse;" : ""}">
+      <div class="avatar" style="width:30px;height:30px;font-size:.7rem;flex-shrink:0;">${initials(m.authorName)}</div>
+      <div style="max-width:70%;">
+        <div class="glass" style="padding:.6rem .9rem;border-radius:var(--radius-md);${m.isMine ? "background:rgba(124,92,255,0.16);" : ""}">
+          <div style="font-size:.7rem;font-weight:600;color:var(--text-tertiary);margin-bottom:.2rem;">${escapeHTML(m.authorName)}</div>
+          <div style="font-size:var(--fs-sm);">${escapeHTML(m.text)}</div>
+        </div>
+        <div style="font-size:.65rem;color:var(--text-tertiary);margin-top:.2rem;${m.isMine ? "text-align:right;" : ""}">${m.time}</div>
+      </div>
+    </div>`).join("");
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
 function wireComposer() {
@@ -89,6 +132,25 @@ function wireComposer() {
     const text = input.value.trim();
     if (!text || !activeProjectId) return;
     input.value = "";
+
+    if (!isFirebaseConfigured || currentUser?.uid === "demo-guest-user") {
+      const messagesEl = document.getElementById("chat-messages");
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <div style="display:flex;gap:.6rem;margin-bottom:var(--space-4);flex-direction:row-reverse;">
+          <div class="avatar" style="width:30px;height:30px;font-size:.7rem;flex-shrink:0;">${initials(currentUser?.displayName || "Me")}</div>
+          <div style="max-width:70%;">
+            <div class="glass" style="padding:.6rem .9rem;border-radius:var(--radius-md);background:rgba(124,92,255,0.16);">
+              <div style="font-size:.7rem;font-weight:600;color:var(--text-tertiary);margin-bottom:.2rem;">${escapeHTML(currentUser?.displayName || "Me")}</div>
+              <div style="font-size:var(--fs-sm);">${escapeHTML(text)}</div>
+            </div>
+            <div style="font-size:.65rem;color:var(--text-tertiary);margin-top:.2rem;text-align:right;">Just now</div>
+          </div>
+        </div>`;
+      messagesEl.appendChild(div.firstElementChild);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return;
+    }
     try {
       await addDoc(collection(db, "projects", activeProjectId, "messages"), {
         text,

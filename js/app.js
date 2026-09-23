@@ -3,7 +3,8 @@
 // Used on every authenticated (app-shell) page.
 // =============================================================
 
-import { auth, db } from "./firebase-config.js";
+import { auth, db, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_USER } from "./demo-data.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -89,6 +90,14 @@ export function showToast(message, type = "info", duration = 4200) {
 --------------------------------------------------------------- */
 export function requireAuth() {
   return new Promise((resolve) => {
+    // If guest demo session is active or Firebase is unconfigured, provide demo user immediately
+    const isGuest = sessionStorage.getItem("projectforge_guest_demo") === "true";
+    if (isGuest || !isFirebaseConfigured) {
+      populateUserChip(DEMO_USER, { role: DEMO_USER.role, name: DEMO_USER.displayName });
+      resolve({ user: DEMO_USER, profile: { role: DEMO_USER.role, name: DEMO_USER.displayName } });
+      return;
+    }
+
     const gate = document.createElement("div");
     gate.className = "auth-gate";
     gate.innerHTML = `<div class="forge-spinner"></div><p class="text-secondary" style="font-size:.85rem">Loading ProjectForge…</p>`;
@@ -96,7 +105,7 @@ export function requireAuth() {
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = "/login.html";
+        window.location.href = "login.html";
         return;
       }
       let profile = null;
@@ -133,12 +142,13 @@ function populateUserChip(user, profile) {
 export function initLogout() {
   document.querySelectorAll("[data-logout]").forEach((btn) => {
     btn.addEventListener("click", async () => {
+      sessionStorage.removeItem("projectforge_guest_demo");
       try {
         await signOut(auth);
-        window.location.href = "/login.html";
       } catch (err) {
-        showToast("Couldn't sign out. Try again.", "error");
+        // guest mode
       }
+      window.location.href = "login.html";
     });
   });
 }

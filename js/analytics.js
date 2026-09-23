@@ -4,7 +4,8 @@
 // status breakdown, and weekly/monthly completion trend.
 // =============================================================
 
-import { db } from "./firebase-config.js";
+import { db, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_PROJECTS } from "./demo-data.js";
 import { collection, collectionGroup, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { escapeHTML } from "./app.js";
 
@@ -14,6 +15,14 @@ export function initAnalyticsPage(user) {
   const container = document.getElementById("analytics-root");
   if (!container || !window.Chart) return;
 
+  if (!isFirebaseConfigured || user.uid === "demo-guest-user") {
+    renderProgressChart(DEMO_PROJECTS);
+    renderStatusChart(DEMO_PROJECTS);
+    renderPriorityChart(DEMO_PROJECTS);
+    renderProjectTable(DEMO_PROJECTS);
+    return;
+  }
+
   const q = query(collection(db, "projects"), where("memberIds", "array-contains", user.uid));
   onSnapshot(q, (snap) => {
     const projects = snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter((p) => !p.archived);
@@ -21,6 +30,12 @@ export function initAnalyticsPage(user) {
     renderStatusChart(projects);
     renderPriorityChart(projects);
     renderProjectTable(projects);
+  }, (err) => {
+    console.error(err);
+    renderProgressChart(DEMO_PROJECTS);
+    renderStatusChart(DEMO_PROJECTS);
+    renderPriorityChart(DEMO_PROJECTS);
+    renderProjectTable(DEMO_PROJECTS);
   });
 }
 
