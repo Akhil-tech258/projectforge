@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — ProjectForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/app-shell.css">
+
+</head>
+<body class="app">
+<div class="shell">
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="brand"><span class="brand-mark"></span> ProjectForge</a>
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Workspace</span>
+      <a href="dashboard.html" class="side-link" data-page="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+      <a href="projects.html" class="side-link" data-page="projects.html"><i class="fa-solid fa-diagram-project"></i> My Projects</a>
+      <a href="calendar.html" class="side-link" data-page="calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a>
+      <a href="files.html" class="side-link" data-page="files.html"><i class="fa-regular fa-folder-open"></i> File Manager</a>
+      <a href="analytics.html" class="side-link" data-page="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+      <a href="team-chat.html" class="side-link" data-page="team-chat.html"><i class="fa-regular fa-comments"></i> Team Chat</a>
+
+      <span class="sidebar-section-label">Account</span>
+      <a href="notifications.html" class="side-link" data-page="notifications.html"><i class="fa-regular fa-bell"></i> Notifications</a>
+      <a href="profile.html" class="side-link" data-page="profile.html"><i class="fa-regular fa-user"></i> Profile</a>
+      <a href="settings.html" class="side-link" data-page="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="admin-dashboard.html" class="side-link" data-page="admin-dashboard.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar" data-user-avatar></div>
+        <div class="user-chip-meta">
+          <div class="user-chip-name" data-user-name>—</div>
+          <div class="user-chip-role" data-user-role>—</div>
+        </div>
+        <button class="icon-btn btn-icon-only" data-logout title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="nav-toggle-mobile"><i class="fa-solid fa-bars"></i></button>
+      <div>
+        <h1>Settings</h1>
+        <div class="topbar-sub">Password, theme, and account preferences</div>
+      </div>
+      <div class="topbar-actions" style="margin-left:auto;">
+        
+        <button class="theme-toggle icon-btn"><i class="fa-solid fa-sun"></i></button>
+        <a href="notifications.html" class="icon-btn"><span class="dot"></span><i class="fa-regular fa-bell"></i></a>
+      </div>
+    </header>
+
+    <div class="page-body">
+
+      <div class="grid-2">
+        <div class="glass panel">
+          <div class="panel-head"><h3>Change Password</h3></div>
+          <div class="form-alert" id="password-alert"></div>
+          <form id="change-password-form">
+            <div class="field"><label for="current-password">Current password</label><input type="password" id="current-password" required></div>
+            <div class="field"><label for="new-password">New password</label><input type="password" id="new-password" required></div>
+            <div class="field"><label for="confirm-new-password">Confirm new password</label><input type="password" id="confirm-new-password" required></div>
+            <button type="submit" class="btn btn-primary"><span class="btn-label">Update password</span><span class="spinner"></span></button>
+          </form>
+        </div>
+        <div class="glass panel">
+          <div class="panel-head"><h3>Appearance</h3></div>
+          <p class="text-secondary" style="font-size:var(--fs-sm);margin-bottom:var(--space-4);">Choose how ProjectForge looks on this device.</p>
+          <div style="display:flex;gap:var(--space-4);">
+            <label class="glass" style="flex:1;padding:var(--space-4);border-radius:var(--radius-md);cursor:pointer;display:flex;align-items:center;gap:.6rem;">
+              <input type="radio" name="theme-pref" value="dark" style="width:auto;"> <i class="fa-solid fa-moon"></i> Dark
+            </label>
+            <label class="glass" style="flex:1;padding:var(--space-4);border-radius:var(--radius-md);cursor:pointer;display:flex;align-items:center;gap:.6rem;">
+              <input type="radio" name="theme-pref" value="light" style="width:auto;"> <i class="fa-solid fa-sun"></i> Light
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { requireAuth } from "./js/app.js";
+  import { initSettingsPage } from "./js/profile.js";
+  requireAuth().then(({ user }) => initSettingsPage(user));
+</script>
+</body>
+</html>

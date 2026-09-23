@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — ProjectForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/app-shell.css">
+<link rel="stylesheet" href="css/marketing.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="index.html" class="brand"><span class="brand-mark"></span> ProjectForge</a>
+    <ul class="nav-links">
+      <li><a href="features.html">Features</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" aria-label="Toggle color theme"></button>
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="register.html" class="btn btn-primary">Start free</a>
+      <button class="nav-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero container">
+  <span class="eyebrow">Get in touch</span>
+  <h1>We'd love to <span class="text-gradient">hear from you</span></h1>
+</header>
+
+<section class="section container">
+  <div class="contact-grid">
+    <div>
+      <div class="contact-info-item">
+        <div class="icon"><i class="fa-solid fa-envelope"></i></div>
+        <div><h4>Email</h4><p>hello@projectforge.app</p></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="icon"><i class="fa-solid fa-comments"></i></div>
+        <div><h4>Support</h4><p>We typically reply within one business day.</p></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="icon"><i class="fa-solid fa-building"></i></div>
+        <div><h4>For teams</h4><p>Setting up ProjectForge for a larger team? Reach out and we'll help you get started.</p></div>
+      </div>
+    </div>
+
+    <div class="glass" style="padding:var(--space-8);">
+      <div class="form-alert" id="contact-alert"></div>
+      <form id="contact-form" novalidate>
+        <div class="input-row">
+          <div class="field">
+            <label for="contact-name">Name</label>
+            <input type="text" id="contact-name" required placeholder="Your name">
+          </div>
+          <div class="field">
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email" required placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="contact-subject">Subject</label>
+          <input type="text" id="contact-subject" placeholder="What's this about?">
+        </div>
+        <div class="field">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" required placeholder="How can we help?" style="min-height:140px;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <span class="btn-label">Send message</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="brand"><span class="brand-mark"></span>ProjectForge</a>
+        <p style="margin-top: 1rem; max-width: 260px;">An AI-powered workspace for planning, managing, and shipping projects.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="features.html">Features</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ProjectForge. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#"><i class="fa-brands fa-github"></i></a>
+        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="js/marketing.js"></script>
+</body>
+</html>

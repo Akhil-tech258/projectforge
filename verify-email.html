@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify your email — ProjectForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/app-shell.css">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-visual">
+    <a href="index.html" class="brand"><span class="brand-mark"></span> ProjectForge</a>
+    <blockquote>
+      "One click and I was in — verification took ten seconds."
+      <cite>— Early ProjectForge user</cite>
+    </blockquote>
+    <div class="text-secondary" style="font-size:.8rem;">© 2026 ProjectForge. All rights reserved.</div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card" style="text-align:center;">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--forge-gradient);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-6);">
+        <i class="fa-solid fa-envelope" style="font-size:1.4rem;color:#05060D;"></i>
+      </div>
+      <h1>Check your inbox</h1>
+      <p class="text-secondary" style="margin-bottom:var(--space-2);">We sent a verification link to</p>
+      <p style="font-weight:600;margin-bottom:var(--space-6);" id="verify-email-addr">—</p>
+
+      <div class="form-alert" id="verify-status"></div>
+
+      <p class="text-secondary" style="font-size:var(--fs-sm);margin-bottom:var(--space-6);">
+        This page will redirect automatically once you've verified. Didn't get the email?
+      </p>
+      <button id="resend-verification" class="btn btn-ghost btn-block">
+        <span class="btn-label">Resend verification email</span>
+        <span class="spinner"></span>
+      </button>
+      <p class="auth-foot"><a href="login.html"><i class="fa-solid fa-arrow-left"></i> Back to login</a></p>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initVerifyEmailPage } from "./js/auth.js";
+  initVerifyEmailPage();
+</script>
+</body>
+</html>
