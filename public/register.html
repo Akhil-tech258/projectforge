@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create your account — ProjectForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/app-shell.css">
+</head>
+<body>
+<div class="auth-wrap">
+
+  <div class="auth-visual">
+    <a href="index.html" class="brand"><span class="brand-mark"></span> ProjectForge</a>
+    <blockquote>
+      "We planned an entire semester-long capstone in ProjectForge — boards, docs, and deadlines never got lost in group chats again."
+      <cite>— Early ProjectForge user</cite>
+    </blockquote>
+    <div class="text-secondary" style="font-size:.8rem;">© 2026 ProjectForge. All rights reserved.</div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card">
+      <h1>Create your account</h1>
+      <p class="text-secondary">Free while in beta. No credit card required.</p>
+
+      <div class="form-alert" id="form-alert"></div>
+
+      <form id="register-form" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" required placeholder="Akhil Sharma" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" required placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required placeholder="At least 8 characters" autocomplete="new-password">
+          <div class="pw-strength"><div class="pw-strength-fill" id="pw-strength-fill"></div></div>
+          <div class="hint" id="pw-strength-label"></div>
+        </div>
+        <div class="field">
+          <label for="confirm-password">Confirm password</label>
+          <input type="password" id="confirm-password" required placeholder="Re-enter your password" autocomplete="new-password">
+        </div>
+        <div class="field">
+          <label class="checkbox-row"><input type="checkbox" id="agree-terms"> I agree to the <a href="terms.html" style="color:var(--cyan)">Terms</a> and <a href="privacy.html" style="color:var(--cyan)">Privacy Policy</a></label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <span class="btn-label">Create account</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+
+      <p class="auth-foot">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { initRegisterForm, redirectIfAuthed } from "./js/auth.js";
+  redirectIfAuthed();
+  initRegisterForm();
+</script>
+</body>
+</html>

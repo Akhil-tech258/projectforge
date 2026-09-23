@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectForge — Plan, build, and ship together</title>
+<meta name="description" content="ProjectForge is an project management workspace for planning, managing, and shipping projects — built for students, developers, freelancers, and teams.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="css/design-system.css">
+
+<link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark"></span>
+      ProjectForge
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="features.html">Features</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" aria-label="Toggle color theme"></button>
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="register.html" class="btn btn-primary">Start free</a>
+      <button class="nav-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="container hero-inner">
+    <span class="hero-badge"><span class="dot"></span> Real-time project collaboration</span>
+    <h1>Where scattered plans become <span class="text-gradient">shipped work</span>.</h1>
+    <p class="lead">ProjectForge brings your tasks, team, files, and deadlines into one workspace — so your team can plan, collaborate, and track progress without switching between multiple tools.</p>
+    <div class="hero-ctas">
+      <a href="register.html" class="btn btn-primary">Start free <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="features.html" class="btn btn-ghost">See how it works</a>
+    </div>
+  </div>
+
+  <div class="hero-preview glass">
+    <div class="preview-topbar">
+      <span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span>
+    </div>
+    <div class="preview-body">
+      <div class="preview-sidebar">
+        <div class="item active"><i class="fa-solid fa-gauge-high"></i>&nbsp; Dashboard</div>
+        <div class="item"><i class="fa-solid fa-diagram-project"></i>&nbsp; Projects</div>
+        <div class="item"><i class="fa-solid fa-table-columns"></i>&nbsp; Board</div>
+        <div class="item"><i class="fa-solid fa-calendar"></i>&nbsp; Calendar</div>
+        <div class="item"><i class="fa-solid fa-comments"></i>&nbsp; Team Chat</div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-board">
+          <div class="preview-col"><h6>To Do</h6><div class="preview-card">Wireframe onboarding flow</div><div class="preview-card">Draft API spec</div></div>
+          <div class="preview-col"><h6>In Progress</h6><div class="preview-card">Auth module tests</div></div>
+          <div class="preview-col"><h6>Review</h6><div class="preview-card">Dashboard redesign</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="seam"></div>
+
+<!-- ============ FEATURES ============ -->
+<section class="section container" id="features">
+  <div class="section-head" data-aos="fade-up">
+    <span class="eyebrow">Everything in one workspace</span>
+    <h2>Stop stitching five tools together</h2>
+    <p>Planning, tasks, files, and team communication — one place, always in sync.</p>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="feature-icon"><i class="fa-solid fa-table-columns"></i></div>
+      <h3>Kanban that keeps up</h3>
+      <p>Drag tasks across To Do, In Progress, Review, and Completed — with checklists, comments, and attachments on every card.</p>
+    </div>
+    <div class="feature-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="feature-icon"><i class="fa-solid fa-bell"></i></div>
+      <h3>Updates in real time</h3>
+      <p>See task changes, comments, and notifications instantly using Firebase real-time listeners.</p>
+    </div>
+    <div class="feature-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="feature-icon"><i class="fa-solid fa-people-group"></i></div>
+      <h3>Real team collaboration</h3>
+      <p>Assign roles, mention teammates, and watch activity update live — no refresh, no delay.</p>
+    </div>
+    <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="feature-icon"><i class="fa-solid fa-folder-open"></i></div>
+      <h3>Files where the work is</h3>
+      <p>Upload images, PDFs, docs, and archives directly onto projects and tasks — preview without leaving the page.</p>
+    </div>
+    <div class="feature-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+      <h3>Analytics that matter</h3>
+      <p>Track progress, completion rate, and team productivity with reports generated automatically each week.</p>
+    </div>
+    <div class="feature-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h3>Secure by default</h3>
+      <p>Role-based access, protected routes, and Firestore security rules keep every project locked to the right people.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COLLABORATION SHOWCASE ============ -->
+<section class="section container">
+  <div class="collab-showcase">
+    <div class="collab-copy" data-aos="fade-right">
+      <span class="eyebrow">Team Collaboration</span>
+      <h2>Keep every teammate on the same page.</h2>
+      <p>ProjectForge keeps tasks, project activity, files, and team communication connected in one real-time workspace.</p>
+      <ul class="collab-list">
+        <li><i class="fa-solid fa-circle-check"></i> Assign tasks and track progress visually</li>
+        <li><i class="fa-solid fa-circle-check"></i> Share comments and project updates instantly</li>
+        <li><i class="fa-solid fa-circle-check"></i> Upload files directly to project workspaces</li>
+        <li><i class="fa-solid fa-circle-check"></i> Monitor deadlines, activity, and analytics</li>
+      </ul>
+    </div>
+    <div class="collab-panel glass" data-aos="fade-left">
+      <div class="chat-line">
+        <div class="chat-avatar"></div>
+        <div class="chat-bubble">Dashboard task moved to Review.</div>
+      </div>
+      <div class="chat-line">
+        <div class="chat-avatar"></div>
+        <div class="chat-bubble">Great. I uploaded the test report and added a comment for the team.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="cta-band container" data-aos="zoom-in">
+  <h2>Your next project starts on one page.</h2>
+  <p>Completely free. No credit card. No setup calls. Just a workspace that's ready when you are.</p>
+  <a href="register.html" class="btn btn-primary">Start building free <i class="fa-solid fa-arrow-right"></i></a>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="brand"><span class="brand-mark"></span>ProjectForge</a>
+        <p style="margin-top: 1rem; max-width: 260px;">An project management workspace for planning, managing, and shipping projects.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="features.html">Features</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ProjectForge. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#"><i class="fa-brands fa-github"></i></a>
+        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="js/marketing.js"></script>
+</body>
+</html>

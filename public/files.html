@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Manager — ProjectForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/app-shell.css">
+
+</head>
+<body class="app">
+<div class="shell">
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="brand"><span class="brand-mark"></span> ProjectForge</a>
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Workspace</span>
+      <a href="dashboard.html" class="side-link" data-page="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+      <a href="projects.html" class="side-link" data-page="projects.html"><i class="fa-solid fa-diagram-project"></i> My Projects</a>
+      <a href="calendar.html" class="side-link" data-page="calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a>
+      <a href="files.html" class="side-link" data-page="files.html"><i class="fa-regular fa-folder-open"></i> File Manager</a>
+      <a href="analytics.html" class="side-link" data-page="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+      <a href="team-chat.html" class="side-link" data-page="team-chat.html"><i class="fa-regular fa-comments"></i> Team Chat</a>
+
+      <span class="sidebar-section-label">Account</span>
+      <a href="notifications.html" class="side-link" data-page="notifications.html"><i class="fa-regular fa-bell"></i> Notifications</a>
+      <a href="profile.html" class="side-link" data-page="profile.html"><i class="fa-regular fa-user"></i> Profile</a>
+      <a href="settings.html" class="side-link" data-page="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="admin-dashboard.html" class="side-link" data-page="admin-dashboard.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar" data-user-avatar></div>
+        <div class="user-chip-meta">
+          <div class="user-chip-name" data-user-name>—</div>
+          <div class="user-chip-role" data-user-role>—</div>
+        </div>
+        <button class="icon-btn btn-icon-only" data-logout title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="nav-toggle-mobile"><i class="fa-solid fa-bars"></i></button>
+      <div>
+        <h1>File Manager</h1>
+        <div class="topbar-sub">Every file across your projects, in one place</div>
+      </div>
+      <div class="topbar-actions" style="margin-left:auto;">
+        
+        <button class="theme-toggle icon-btn"><i class="fa-solid fa-sun"></i></button>
+        <a href="notifications.html" class="icon-btn"><span class="dot"></span><i class="fa-regular fa-bell"></i></a>
+      </div>
+    </header>
+
+    <div class="page-body">
+
+      <div class="glass panel" style="margin-bottom:var(--space-6);">
+        <div class="panel-head"><h3>Upload a file</h3></div>
+        <div style="display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap;">
+          <select id="upload-project-select" style="max-width:240px;"></select>
+          <label class="btn btn-primary btn-sm" style="cursor:pointer;">
+            <i class="fa-solid fa-upload"></i> Choose file
+            <input type="file" id="file-upload-input" style="display:none;">
+          </label>
+          <span class="text-secondary" style="font-size:.75rem;">Images, PDFs, docs, and zips up to 25MB</span>
+        </div>
+        <div class="progress-track" id="upload-progress" style="display:none;margin-top:var(--space-4);"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+
+      <div class="project-grid" id="files-grid"></div>
+      <div class="empty-state" id="files-empty" style="display:none;">
+        <i class="fa-regular fa-folder-open"></i>
+        <h4>No files yet</h4>
+        <p>Files you upload to any project will show up here.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { requireAuth } from "./js/app.js";
+  import { initFilesPage } from "./js/files.js";
+  requireAuth().then(({ user }) => initFilesPage(user));
+</script>
+</body>
+</html>

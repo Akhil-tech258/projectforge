@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isProjectMember(projectId) {
+      return isSignedIn() &&
+        request.auth.uid in firestore.get(/databases/(default)/documents/projects/$(projectId)).data.memberIds;
+    }
+
+    // Project files: only members of that project can read/write
+    match /projects/{projectId}/files/{fileName} {
+      allow read, write: if isProjectMember(projectId);
+      allow write: if request.resource.size < 25 * 1024 * 1024; // 25MB cap
+    }
+
+    // Profile pictures: any signed-in user can read, only the owner can write
+    match /avatars/{uid}/{fileName} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && request.auth.uid == uid && request.resource.size < 5 * 1024 * 1024;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
