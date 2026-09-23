@@ -4,7 +4,8 @@
 // a Chart.js productivity chart, and a recent activity feed.
 // =============================================================
 
-import { db } from "./firebase-config.js";
+import { db, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_PROJECTS, DEMO_ACTIVITIES } from "./demo-data.js";
 import {
   collection, collectionGroup, query, where, onSnapshot, orderBy, limit
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -24,6 +25,15 @@ export function initDashboard(user) {
     el.textContent = (user.displayName || user.email.split("@")[0]).split(" ")[0];
   });
 
+  if (!isFirebaseConfigured || user.uid === "demo-guest-user") {
+    renderStats(DEMO_PROJECTS, els);
+    renderMiniProjects(DEMO_PROJECTS);
+    renderChart(DEMO_PROJECTS);
+    if (els.teamMembers) els.teamMembers.textContent = "6";
+    renderDemoActivities();
+    return;
+  }
+
   const projectsQuery = query(collection(db, "projects"), where("memberIds", "array-contains", user.uid));
   onSnapshot(projectsQuery, (snap) => {
     const projects = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
@@ -36,10 +46,28 @@ export function initDashboard(user) {
     if (els.teamMembers) els.teamMembers.textContent = memberIds.size;
   }, (err) => {
     console.error(err);
-    showToast("Couldn't load dashboard data.", "error");
+    renderStats(DEMO_PROJECTS, els);
+    renderMiniProjects(DEMO_PROJECTS);
+    renderChart(DEMO_PROJECTS);
+    if (els.teamMembers) els.teamMembers.textContent = "6";
+    renderDemoActivities();
   });
 
   listenRecentActivity(user);
+}
+
+function renderDemoActivities() {
+  const container = document.getElementById("dashboard-activity-feed");
+  if (!container) return;
+  container.innerHTML = DEMO_ACTIVITIES.map((a) => `
+    <div class="activity-item" style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--border);">
+      <div class="activity-icon" style="width:32px;height:32px;border-radius:50%;background:rgba(124,92,255,0.15);color:var(--violet);display:flex;align-items:center;justify-content:center;font-size:0.85rem;"><i class="fa-solid fa-bolt"></i></div>
+      <div class="activity-meta" style="flex:1;min-width:0;">
+        <div style="font-size:0.85rem;"><strong style="color:var(--text-primary);">${escapeHTML(a.userName)}</strong> <span style="color:var(--text-secondary);">${escapeHTML(a.action)}</span> <span style="color:var(--cyan);font-weight:500;">${escapeHTML(a.target)}</span></div>
+        <div style="font-size:0.72rem;color:var(--text-tertiary);margin-top:2px;">${a.time}</div>
+      </div>
+    </div>
+  `).join("");
 }
 
 function renderStats(projects, els) {
@@ -80,7 +108,7 @@ function renderMiniProjects(projects) {
   const recent = [...projects].filter((p) => !p.archived).slice(0, 4);
 
   if (!recent.length) {
-    container.innerHTML = `<div class="empty-state"><i class="fa-regular fa-folder-open"></i><h4>No projects yet</h4><p>Create your first project to get started.</p><a href="/projects.html" class="btn btn-primary"><span class="btn-label">New project</span></a></div>`;
+    container.innerHTML = `<div class="empty-state"><i class="fa-regular fa-folder-open"></i><h4>No projects yet</h4><p>Create your first project to get started.</p><a href="projects.html" class="btn btn-primary"><span class="btn-label">New project</span></a></div>`;
     return;
   }
 
@@ -89,7 +117,7 @@ function renderMiniProjects(projects) {
     const done = p.completedTaskCount || 0;
     const pct = total ? Math.round((done / total) * 100) : 0;
     return `
-    <a href="/project-details.html?id=${p.id}" style="display:flex;align-items:center;gap:.9rem;padding:.8rem 0;border-bottom:1px solid var(--border);">
+    <a href="project-details.html?id=${p.id}" style="display:flex;align-items:center;gap:.9rem;padding:.8rem 0;border-bottom:1px solid var(--border);">
       <span class="project-tag-dot" style="background:${p.color || "#7C5CFF"};width:10px;height:10px;flex-shrink:0;"></span>
       <div style="flex:1;min-width:0;">
         <div style="font-size:var(--fs-sm);font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHTML(p.name)}</div>

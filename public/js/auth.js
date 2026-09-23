@@ -56,7 +56,7 @@ function friendlyError(err) {
 /* Redirect signed-in users away from auth pages */
 export function redirectIfAuthed() {
   onAuthStateChanged(auth, (user) => {
-    if (user) window.location.href = "/dashboard.html";
+    if (user) window.location.href = "dashboard.html";
   });
 }
 
@@ -122,7 +122,7 @@ export function initRegisterForm() {
       });
 
       await sendEmailVerification(cred.user);
-      window.location.href = "/verify-email.html";
+      window.location.href = "verify-email.html";
     } catch (err) {
       showAlert(alertEl, friendlyError(err));
     } finally {
@@ -167,10 +167,10 @@ export function initLoginForm() {
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
       if (!cred.user.emailVerified) {
-        window.location.href = "/verify-email.html";
+        window.location.href = "verify-email.html";
         return;
       }
-      window.location.href = "/dashboard.html";
+      window.location.href = "dashboard.html";
     } catch (err) {
       showAlert(alertEl, friendlyError(err));
     } finally {
@@ -266,7 +266,7 @@ export function initResetPasswordForm() {
       await confirmPasswordReset(auth, oobCode, password);
       form.style.display = "none";
       showAlert(alertEl, "Password updated. You can now log in.", "success");
-      setTimeout(() => (window.location.href = "/login.html"), 1800);
+      setTimeout(() => (window.location.href = "login.html"), 1800);
     } catch (err) {
       showAlert(alertEl, friendlyError(err));
     } finally {
@@ -285,12 +285,12 @@ export function initVerifyEmailPage() {
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      window.location.href = "/login.html";
+      window.location.href = "login.html";
       return;
     }
     if (emailEl) emailEl.textContent = user.email;
     if (user.emailVerified) {
-      window.location.href = "/dashboard.html";
+      window.location.href = "dashboard.html";
     }
   });
 
@@ -314,7 +314,7 @@ export function initVerifyEmailPage() {
     await auth.currentUser.reload();
     if (auth.currentUser.emailVerified) {
       clearInterval(interval);
-      window.location.href = "/dashboard.html";
+      window.location.href = "dashboard.html";
     }
   }, 4000);
 }

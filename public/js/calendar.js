@@ -5,7 +5,8 @@
 // the cross-project overview called for in the spec.
 // =============================================================
 
-import { db } from "./firebase-config.js";
+import { db, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_PROJECTS } from "./demo-data.js";
 import { collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { escapeHTML } from "./app.js";
 
@@ -20,6 +21,19 @@ export function initCalendarPage(user) {
   document.getElementById("cal-next")?.addEventListener("click", () => { viewDate.setMonth(viewDate.getMonth() + 1); render(); });
   document.getElementById("cal-today")?.addEventListener("click", () => { viewDate = new Date(); render(); });
 
+  if (!isFirebaseConfigured || user.uid === "demo-guest-user") {
+    events = DEMO_PROJECTS
+      .filter((p) => p.deadline)
+      .map((p) => ({
+        date: new Date(p.deadline),
+        title: p.name,
+        color: p.color || "#7C5CFF",
+        projectId: p.id
+      }));
+    render();
+    return;
+  }
+
   const q = query(collection(db, "projects"), where("memberIds", "array-contains", user.uid));
   onSnapshot(q, (snap) => {
     events = snap.docs
@@ -27,6 +41,17 @@ export function initCalendarPage(user) {
       .filter((p) => p.deadline)
       .map((p) => ({
         date: p.deadline.toDate ? p.deadline.toDate() : new Date(p.deadline),
+        title: p.name,
+        color: p.color || "#7C5CFF",
+        projectId: p.id
+      }));
+    render();
+  }, (err) => {
+    console.error(err);
+    events = DEMO_PROJECTS
+      .filter((p) => p.deadline)
+      .map((p) => ({
+        date: new Date(p.deadline),
         title: p.name,
         color: p.color || "#7C5CFF",
         projectId: p.id
@@ -65,7 +90,7 @@ function render() {
     cells += `
     <div class="glass" style="min-height:86px;padding:.5rem;border-radius:var(--radius-sm);${isToday ? "border-color:var(--violet);" : ""}">
       <div style="font-size:.75rem;font-weight:${isToday ? "700" : "500"};color:${isToday ? "var(--violet)" : "var(--text-secondary)"};margin-bottom:.3rem;">${day}</div>
-      ${dayEvents.map((e) => `<a href="/project-details.html?id=${e.projectId}" style="display:block;font-size:.65rem;padding:.15rem .4rem;border-radius:4px;background:${e.color}22;color:${e.color};margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHTML(e.title)}">${escapeHTML(e.title)}</a>`).join("")}
+      ${dayEvents.map((e) => `<a href="project-details.html?id=${e.projectId}" style="display:block;font-size:.65rem;padding:.15rem .4rem;border-radius:4px;background:${e.color}22;color:${e.color};margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHTML(e.title)}">${escapeHTML(e.title)}</a>`).join("")}
     </div>`;
   }
 

@@ -2,7 +2,7 @@
 // PROJECTFORGE — PROFILE & SETTINGS
 // =============================================================
 
-import { auth, db, storage } from "./firebase-config.js";
+import { auth, db, storage, isFirebaseConfigured } from "./firebase-config.js";
 import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { updatePassword, updateProfile, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
@@ -30,6 +30,11 @@ export function initProfilePage(user, profile) {
       const file = avatarInput.files[0];
       if (!file) return;
       if (file.size > 5 * 1024 * 1024) { showToast("Image must be under 5MB.", "error"); return; }
+      if (!isFirebaseConfigured || user.uid === "demo-guest-user") {
+        avatarPreview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="">`;
+        showToast("Profile photo updated (Demo Mode).", "success");
+        return;
+      }
       try {
         const fileRef = ref(storage, `avatars/${user.uid}/${Date.now()}-${file.name}`);
         await uploadBytes(fileRef, file);
@@ -54,6 +59,15 @@ export function initProfilePage(user, profile) {
     const phone = document.getElementById("profile-phone").value.trim();
     const skills = document.getElementById("profile-skills").value.trim().split(",").map((s) => s.trim()).filter(Boolean);
     const bio = document.getElementById("profile-bio").value.trim();
+
+    if (!isFirebaseConfigured || user.uid === "demo-guest-user") {
+      setTimeout(() => {
+        showToast("Profile updated (Demo Mode).", "success");
+        submitBtn.classList.remove("loading");
+        submitBtn.disabled = false;
+      }, 400);
+      return;
+    }
 
     try {
       await updateDoc(doc(db, "users", user.uid), { name, phone, skills, bio });

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — ProjectForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/design-system.css">
+<style>
+  body {
+    background: var(--bg-main, #0b0f19);
+    color: var(--text-primary, #f8fafc);
+    font-family: var(--font-sans, "Inter", sans-serif);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .glow-404 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(124, 92, 255, 0.22) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .card-404 {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    background: rgba(18, 24, 38, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+  .badge-404 {
+    display: inline-block;
+    font-size: 5rem;
+    font-weight: 800;
+    font-family: var(--font-heading, "Poppins", sans-serif);
+    line-height: 1;
+    background: linear-gradient(135deg, #7c5cff 0%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .card-404 h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+  }
+  .card-404 p {
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .actions-404 {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+<div class="glow-404"></div>
+<div class="card-404">
+  <div class="badge-404">404</div>
+  <h1>Page Not Found</h1>
+  <p>The page or resource you're looking for doesn't exist, has been moved, or is temporarily unavailable.</p>
+  <div class="actions-404">
+    <a href="index.html" class="btn btn-primary"><i class="fa-solid fa-house" style="margin-right:0.4rem;"></i> Go Home</a>
+    <a href="dashboard.html" class="btn btn-ghost"><i class="fa-solid fa-gauge" style="margin-right:0.4rem;"></i> Dashboard</a>
+  </div>
+</div>
+</body>
+</html>

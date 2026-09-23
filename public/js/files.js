@@ -4,7 +4,8 @@
 // them upload directly into a chosen project via Firebase Storage.
 // =============================================================
 
-import { db, storage } from "./firebase-config.js";
+import { db, storage, isFirebaseConfigured } from "./firebase-config.js";
+import { DEMO_PROJECTS } from "./demo-data.js";
 import {
   collection, collectionGroup, query, where, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -31,6 +32,15 @@ export function initFilesPage(user) {
   const emptyState = document.getElementById("files-empty");
   const projectSelect = document.getElementById("upload-project-select");
   if (!grid) return;
+
+  if (!isFirebaseConfigured || user.uid === "demo-guest-user") {
+    if (projectSelect) {
+      projectSelect.innerHTML = DEMO_PROJECTS.map((p) => `<option value="${p.id}">${escapeHTML(p.name)}</option>`).join("");
+    }
+    renderDemoFiles(grid, emptyState);
+    wireUploader(user);
+    return;
+  }
 
   // Load the user's projects (for the upload target picker)
   const projQ = query(collection(db, "projects"), where("memberIds", "array-contains", user.uid));
@@ -142,4 +152,29 @@ function formatBytes(bytes) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function renderDemoFiles(grid, emptyState) {
+  if (emptyState) emptyState.style.display = "none";
+  const demoFiles = [
+    { name: "system-architecture-spec.pdf", type: "application/pdf", sizeLabel: "2.4 MB", projectName: "AI Workflow Engine" },
+    { name: "brand-design-tokens.svg", type: "image/svg+xml", sizeLabel: "420 KB", projectName: "Design System v2.0" },
+    { name: "cloud-audit-checklist.docx", type: "application/msword", sizeLabel: "1.1 MB", projectName: "Cloud Infrastructure Audit" },
+    { name: "mobile-banking-wireframes.png", type: "image/png", sizeLabel: "3.8 MB", projectName: "Fintech Mobile App" }
+  ];
+
+  grid.innerHTML = demoFiles.map((f) => `
+    <div class="glass project-card" style="cursor:default;">
+      <div class="project-card-top">
+        <div style="display:flex;align-items:center;gap:.6rem;min-width:0;">
+          <i class="fa-solid ${iconFor(f.type)}" style="color:var(--cyan);font-size:1.1rem;"></i>
+          <span style="font-weight:600;font-size:var(--fs-sm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHTML(f.name)}</span>
+        </div>
+      </div>
+      <div style="font-size:.72rem;color:var(--text-tertiary);margin:.4rem 0;">${escapeHTML(f.projectName)}</div>
+      <div class="project-card-foot">
+        <span style="font-size:.75rem;color:var(--text-secondary);">${f.sizeLabel}</span>
+        <button class="icon-btn btn-icon-only" title="Download preview" onclick="alert('Demo file preview')"><i class="fa-solid fa-download"></i></button>
+      </div>
+    </div>`).join("");
 }

@@ -1,5 +1,11 @@
 # ProjectForge
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-6366f1?style=for-the-badge&logo=github)](https://akhil-tech258.github.io/projectforge/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> 🚀 **Live Demo:** [https://akhil-tech258.github.io/projectforge/](https://akhil-tech258.github.io/projectforge/)  
+> *Includes a **Live Interactive Demo / Portfolio Preview** mode for instant exploration of the Kanban boards, charts, calendar, file manager, and team chat without requiring private credentials.*
+
 An AI-powered, full-stack project management & team collaboration platform — vanilla HTML/CSS/JS frontend, Node.js/Express backend, Firebase (Auth, Firestore, Storage) for data.
 
 ## What's built

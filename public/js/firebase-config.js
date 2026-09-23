@@ -31,6 +31,8 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 
+export const isFirebaseConfigured = !firebaseConfig.apiKey.includes("YOUR_");
+
 // Backend API base — point this at your Express server (Render/local).
 export const API_BASE_URL = "http://localhost:5000/api";
 
